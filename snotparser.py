@@ -130,10 +130,14 @@ def formatTicketSmart(number, formatString, command='snot'):
         return str(number) + ": No ticket found"
 
 
-def getTicketHistory(number):
+def getTicketHistory(number, snot_cmd):
     try:
         number = int(number)
-        process = subprocess.Popen(['grep', "TKT: %d" % number, "/u/snot/logs/log"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if snot_cmd == 'testsnot':
+            snot_log = '/u/snot/test/logs/log'
+        else:
+            snot_cmd = '/u/snot/logs/log'
+        process = subprocess.Popen(['grep', "TKT: %d" % number, snot_log], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         return process.stdout.readlines()
     except ValueError as e:
         return str(e)
@@ -144,4 +148,5 @@ if __name__ == "__main__":
     import os
     snot_cmd = os.environ.get('SNOT_CMD', 'snot')
     ticket_num = sys.argv[1]
-    print ticket_num, parseTicket(ticket_num, snot_cmd)
+    #print ticket_num, parseTicket(ticket_num, snot_cmd)
+    print ticket_num, getTicketHistory(ticket_num, snot_cmd)
