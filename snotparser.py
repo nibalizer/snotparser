@@ -52,6 +52,20 @@ def parseTicket(number, command='snot'):
             ticketDictionary["from_line"] = match.group("from_line")
             break
 
+    #print "Searching for To field"
+    for line in rawTicket[0:bodyStartLine]:
+        match = re.match(r"^To:\s*(?P<to_line>.*)$", line)
+        if match:
+            ticketDictionary["to_line"] = match.group("to_line")
+            break
+
+    #print "Searching for cc field"
+    for line in rawTicket[0:bodyStartLine]:
+        match = re.match(r"^Cc:\s*(?P<cc_line>.*)$", line)
+        if match:
+            ticketDictionary["cc_line"] = match.group("cc_line")
+            break
+
     for line in rawTicket[administrativeStartLine:]:
         kvMatch = re.match("^(?P<key>.+?):\s+(?P<value>.*)$", line)
         if kvMatch:
@@ -148,5 +162,5 @@ if __name__ == "__main__":
     import os
     snot_cmd = os.environ.get('SNOT_CMD', 'snot')
     ticket_num = sys.argv[1]
-    #print ticket_num, parseTicket(ticket_num, snot_cmd)
-    print ticket_num, getTicketHistory(ticket_num, snot_cmd)
+    print ticket_num, parseTicket(ticket_num, snot_cmd)
+    #print ticket_num, getTicketHistory(ticket_num, snot_cmd)
