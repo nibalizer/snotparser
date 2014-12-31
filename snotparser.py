@@ -68,7 +68,7 @@ def parseTicket(number, command='snot'):
 
     #print "Searching for X-Boogerd-UUID field"
     for line in rawTicket[0:bodyStartLine]:
-        match = re.match(r"^key: X-Boogerd-UUID:\s*(?P<boogerd_uuid_line>.*)$", line)
+        match = re.match(r"^X-Boogerd-UUID:\s*(?P<boogerd_uuid_line>.*)$", line)
         if match:
             ticketDictionary["boogerd_uuid"] = match.group("boogerd_uuid_line")
             break
